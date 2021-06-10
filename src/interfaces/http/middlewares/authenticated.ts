@@ -1,6 +1,8 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import { HTTP_STATUS } from '../../../types/http';
 import { decodeToken, generateToken } from '../utils/jwt';
+import { respondError } from '../utils/respond';
 
 export default async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     let token = req.header('authorization');
@@ -17,9 +19,9 @@ export default async (req: express.Request, res: express.Response, next: express
             res.header('Authorization', 'Bearer ' + newToken);
             return next();
         } catch(err) {
-            return res.status(401).json('invalid token');
+            return respondError(res, HTTP_STATUS.UNAUTHORIZED, 'invalid auth token', null);
         }
     }
 
-    return res.status(401).json('token required');
+    return respondError(res, HTTP_STATUS.UNAUTHORIZED, 'auth token required', null);
 };

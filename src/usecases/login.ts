@@ -17,7 +17,7 @@ const comparePasswords = async (password: string, hashedPassword: string): Promi
     return isPasswordMatching;
 }
 
-const login = async (db: db, username: string, password: string): Promise<any> => {
+const login = async (db: db, username: string, password: string): Promise<{ token: string, user: User }> => {
     // Get user from db
     const user = await getUserByUsername(db, username);
 
@@ -44,10 +44,10 @@ const login = async (db: db, username: string, password: string): Promise<any> =
 
     const token = generateToken(user);
 
-    return { token, user };
+    return { token, user: { id: user.id, username: user.username } };
 }
 
-const register = async (db: db, username: string, password: string) => {
+const register = async (db: db, username: string, password: string): Promise<User | null> => {
     // Check if username already exists
     const existingUser = await getUserByUsername(db, username);
 

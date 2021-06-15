@@ -3,10 +3,9 @@
   "version": "0.0.1",
   "description": "Association management tool",
   "main": "app.js",
-  "type": "module",
   "scripts": {
     "dev": "tsnd --respawn ./src/app.ts",
-    "test": "npm run test"
+    "migrate": "node-pg-migrate"
   },
   "author": "VLaroye",
   "license": "ISC",
@@ -16,7 +15,6 @@
     "express": "^4.17.1",
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^8.6.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -26,6 +24,8 @@
     "@types/node": "^15.12.0",
     "@types/pg": "^8.6.0",
     "@types/uuid": "^8.3.0",
+    "node-pg-migrate": "^5.9.0",
+    "pg": "^8.6.0",
     "ts-node": "^10.0.0",
     "ts-node-dev": "^1.1.6",
     "typescript": "^4.3.2"

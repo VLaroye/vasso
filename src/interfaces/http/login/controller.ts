@@ -1,7 +1,7 @@
 import express from 'express';
 import loginUsecase from '../../../usecases/login';
 import { HTTP_STATUS } from '../../../types/http';
-import { loginRequestSchema, registerRequestSchema } from '../../../schemas/login';
+import { loginRequestSchema, registerRequestSchema } from '../schemas/login';
 import { respondError } from '../utils/respond';
 import { db } from '../../../types/interfaces';
 
@@ -22,6 +22,8 @@ export const login = (db: db) => {
       res.header('Authorization', 'Bearer ' + token);
       res.status(HTTP_STATUS.OK).json({ status: HTTP_STATUS.OK, user });
     } catch (err) {
+      console.log(err);
+      
       respondError(res, HTTP_STATUS.SERVER_ERROR, 'unable to login', null);         
     }        
   });
@@ -45,6 +47,8 @@ export const register = (db: db) => {
 
       res.status(HTTP_STATUS.OK).json({ user });
     } catch (err) {
+      console.log(err);
+      
       if (err.name === 'AlreadyExists') {
         respondError(res, HTTP_STATUS.SERVER_ERROR, err.message, null);
         return;

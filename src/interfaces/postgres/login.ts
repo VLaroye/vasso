@@ -7,47 +7,38 @@ export const getUserByUsername = async (dbClient: Pool, username: string): Promi
         values: [username],
     }
 
-    try {
-        const { rows, rowCount } = await dbClient.query(query);
+    const { rows, rowCount } = await dbClient.query(query);
 
-        if (rowCount === 0) {
-            return null;
-        }
-
-        const [{ id, username, password }] = rows;
-
-        return {
-            id,
-            username,
-            password,
-        };
-    } catch (err) {
-        throw err;
+    if (rowCount === 0) {
+        return null;
     }
+
+    const [{ id, username: foundUsername, password }] = rows;
+
+    return {
+        id,
+        username: foundUsername,
+        password,
+    };
 }
 
 export const registerUser = async (dbClient: Pool, user: UserWithPassword): Promise<User | null> => {
-    try {
-        const { id, username, password } = user;
+    const { id, username, password } = user;
 
-        // Create INSERT query
-        const query = {
-            text: 'INSERT INTO users(id, username, password) VALUES ($1, $2, $3) RETURNING *',
-            values: [id, username, password],
-        }
-        // Execute query
-        const { rows } = await dbClient.query(query);
-
-        if (rows[0]) {
-            const [{ id, username }] = rows;
-        
-            // Returns created user
-            return { id, username }
-        }
-
-        return null;
-
-    } catch (err) {
-        throw err;
+    // Create INSERT query
+    const query = {
+        text: 'INSERT INTO users(id, username, password) VALUES ($1, $2, $3) RETURNING *',
+        values: [id, username, password],
     }
+    // Execute query
+    const { rows } = await dbClient.query(query);
+
+    if (rows[0]) {
+        const [{ id, username }] = rows;
+    
+        // Returns created user
+        return { id, username }
+    }
+
+    return null;
 }

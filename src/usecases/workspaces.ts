@@ -4,11 +4,9 @@ import { db } from "../types/interfaces"
 import Workspace from "../types/workspace";
 
 const getWorkspace = async (db: db, id: string): Promise<Workspace | null> => {
-    console.log('toto');
-    
+    // TODO: Check if user has access to this workspace
+     
     const workspace = await workspacesService.getWorkspaceById(db, id);
-
-    console.log('tata', workspace);
     
     if (!workspace) {
         const err = {
@@ -22,7 +20,7 @@ const getWorkspace = async (db: db, id: string): Promise<Workspace | null> => {
     return workspace;
 }
 
-const createWorkspace = async (db: db, name:string): Promise<Workspace | null> => {
+const createWorkspace = async (db: db, name: string): Promise<Workspace | null> => {
     const id = uuid();
 
     const workspaceToCreate: Workspace = { id, name };
@@ -41,7 +39,14 @@ const createWorkspace = async (db: db, name:string): Promise<Workspace | null> =
     return createdWorkspace;
 }
 
+const listWorkspaces = async (db: db, userId: string): Promise<Workspace[]> => {
+    const workspaces = await workspacesService.listWorkspaces(db, userId);
+
+    return workspaces;
+}
+
 export default {
     getWorkspace,
     createWorkspace,
+    listWorkspaces,
 }

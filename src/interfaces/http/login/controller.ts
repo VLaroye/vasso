@@ -8,9 +8,12 @@ import { db } from '../../../types/interfaces';
 export const login = (db: db) => {
   return (async (req: express.Request, res: express.Response) => {
     try {
-      const { body, headers } = req;
+      const { body } = req;
+
+      console.log(body);
       
-      const { error, value } = loginRequestSchema.validate(body);
+      
+      const { error } = loginRequestSchema.validate(body);
       
       if (error) {
         respondError(res, HTTP_STATUS.BAD_REQUEST, 'validation error', error.details );

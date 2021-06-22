@@ -3,11 +3,27 @@ import { HTTP_STATUS } from '../../../types/http';
 import { db } from '../../../types/interfaces';
 import workspaceUsecase from '../../../usecases/workspaces';
 import { createWorkspaceRequestSchema } from '../schemas/workspaces';
+import { decodeToken } from '../utils/jwt';
 import { respondError } from '../utils/respond';
 
 export const listWorkspaces = (db: db) => {
   return (async (req: express.Request, res: express.Response) => {
-    res.json('list workspaces')
+    try {
+      let userId = req.get('user-id');      
+
+      if (!userId) {
+        respondError(res, HTTP_STATUS.BAD_REQUEST, 'error getting user id', null);
+        return;
+      }
+
+      const workspaces = await workspaceUsecase.listWorkspaces(db, userId);
+      
+      res.status(HTTP_STATUS.OK).json({ status: HTTP_STATUS.OK, workspaces });
+    } catch (err) {
+      console.log(err);
+      
+      respondError(res, HTTP_STATUS.SERVER_ERROR, 'unable to list workspaces', null); 
+    }
   });
 }
 
@@ -16,20 +32,18 @@ export const getWorkspace = (db: db) => {
     try {
       const { id } = req.params;
 
-      const workspace = await workspaceUsecase.getWorkspace(db, id);
-      console.log('toto', workspace);
-      
+      const workspace = await workspaceUsecase.getWorkspace(db, id);      
 
       if (!workspace) {
         respondError(res, HTTP_STATUS.NOT_FOUND, 'workspace not found', null);
         return;
       }
 
-      res.status(HTTP_STATUS.OK).json({ status: HTTP_STATUS.OK,workspace });
+      res.status(HTTP_STATUS.OK).json({ status: HTTP_STATUS.OK, workspace });
     } catch (err) {
       console.log(err);
       
-      respondError(res, HTTP_STATUS.SERVER_ERROR, 'unable get workspace', null);    
+      respondError(res, HTTP_STATUS.SERVER_ERROR, 'unable to get workspace', null);    
     }
   });
 }

@@ -17,6 +17,10 @@ export default async (req: express.Request, res: express.Response, next: express
             const newToken  = generateToken(decodedToken.user);
 
             res.header('Authorization', 'Bearer ' + newToken);
+
+            console.log(decodedToken.user.id);
+            
+            req.headers['user-id'] = decodedToken.user.id;
             return next();
         } catch(err) {
             return respondError(res, HTTP_STATUS.UNAUTHORIZED, 'invalid auth token', null);

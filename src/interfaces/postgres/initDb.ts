@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 import { Postgresql } from '../../types/interfaces';
 import { getUserByUsername, registerUser } from './login';
-import { getWorkspaceById, createWorkspace } from './workspaces';
+import { getWorkspaceById, createWorkspace, listWorkspaces } from './workspaces';
 
 export const initDb = (): Postgresql => {
     const pool = new Pool();
@@ -15,6 +15,7 @@ export const initDb = (): Postgresql => {
         workspaces: {
             getWorkspaceById,
             createWorkspace,
+            listWorkspaces,
         }
     }
 }

@@ -25,18 +25,16 @@ export const getUserByUsername = async (dbClient: Pool, username: string): Promi
 export const registerUser = async (dbClient: Pool, user: UserWithPassword): Promise<User | null> => {
     const { id, username, password } = user;
 
-    // Create INSERT query
     const query = {
         text: 'INSERT INTO users(id, username, password) VALUES ($1, $2, $3) RETURNING *',
         values: [id, username, password],
     }
-    // Execute query
+
     const { rows } = await dbClient.query(query);
 
     if (rows[0]) {
         const [{ id, username }] = rows;
     
-        // Returns created user
         return { id, username }
     }
 

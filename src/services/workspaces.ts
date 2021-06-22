@@ -9,7 +9,12 @@ const createWorkspace = async (db: db, workspace: Workspace): Promise<Workspace 
     return await db.workspaces.createWorkspace(db.dbClient, workspace);
 }
 
+const listWorkspaces = async (db: db, userId: string): Promise<Workspace[]> => {
+    return await db.workspaces.listWorkspaces(db.dbClient, userId);
+}
+
 export default {
     getWorkspaceById,
-    createWorkspace
+    createWorkspace,
+    listWorkspaces,
 }

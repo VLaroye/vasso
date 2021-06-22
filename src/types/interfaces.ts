@@ -20,4 +20,5 @@ interface loginInterface {
 interface workspacesInterface {
     getWorkspaceById: (dbClient: any, id: string) => Promise<Workspace | null>
     createWorkspace: (dbClient: any, workspace: Workspace) => Promise<Workspace | null>
+    listWorkspaces: (dbClient: any, userId: string) => Promise<Workspace[]>
 }

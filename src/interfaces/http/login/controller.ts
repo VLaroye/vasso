@@ -8,10 +8,7 @@ import { db } from '../../../types/interfaces';
 export const login = (db: db) => {
   return (async (req: express.Request, res: express.Response) => {
     try {
-      const { body } = req;
-
-      console.log(body);
-      
+      const { body } = req;      
       
       const { error } = loginRequestSchema.validate(body);
       

@@ -1,4 +1,3 @@
-import { Pool } from "pg";
 import { User, UserWithPassword } from "./user";
 import Workspace from "./workspace";
 
@@ -6,10 +5,6 @@ export interface db {
     dbClient: any,
     login: loginInterface
     workspaces: workspacesInterface
-}
-
-export interface Postgresql extends db {
-    dbClient: Pool;
 }
 
 interface loginInterface {

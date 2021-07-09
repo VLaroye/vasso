@@ -4,8 +4,6 @@ import { db } from "../types/interfaces"
 import Workspace from "../types/workspace";
 
 const getWorkspace = async (db: db, id: string): Promise<Workspace | null> => {
-    // TODO: Check if user has access to this workspace
-     
     const workspace = await workspacesService.getWorkspaceById(db, id);
     
     if (!workspace) {
